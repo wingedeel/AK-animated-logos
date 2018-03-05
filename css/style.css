@@ -1,0 +1,24 @@
+.row {
+	display:flex;
+	flex-direction:row;
+}
+
+#button-container {
+	width:80%;
+	margin:0 auto;
+}
+#logo-container {
+	position:absolute;
+	top: 50%;
+	left: 15%;
+	margin:0 auto;
+}
+
+h3 {
+	padding: 20px 50px;
+}
+
+.logo {
+	width: 100%;
+	margin:30px;
+}
