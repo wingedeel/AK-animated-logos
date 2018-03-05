@@ -1,6 +1,6 @@
 .row {
-	display:flex;
-	flex-direction:row;
+	/*display:flex;*/
+	/*flex-direction:row;*/
 }
 
 #button-container {
@@ -8,10 +8,12 @@
 	margin:0 auto;
 }
 #logo-container {
-	position:absolute;
+	position:relative;
 	top: 50%;
 	left: 15%;
 	margin:0 auto;
+	height: 300px;
+	/*border: 1px solid red;*/
 }
 
 h3 {
@@ -19,6 +21,9 @@ h3 {
 }
 
 .logo {
-	width: 100%;
-	margin:30px;
+	width: 10%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	opacity:0;
 }

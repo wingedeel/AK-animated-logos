@@ -23,80 +23,91 @@ var logo_03 = document.querySelector('#logo-03');
 var logo_04 = document.querySelector('#logo-04');
 var logo_05 = document.querySelector('#logo-05');
 var logo_06 = document.querySelector('#logo-06');
-var logo_07 = document.querySelector('#logo-07');
-var logo_08 = document.querySelector('#logo-08');
-var logo_09 = document.querySelector('#logo-09');
 
 var allItems = [
-	logo_01, logo_02, logo_03,
-	logo_04, logo_05, logo_06,
-	logo_07, logo_08, logo_09
-]; 	
+    logo_01, logo_02, logo_03,
+    logo_04, logo_05, logo_06
+];
 
-var displayY = 100;
+var initY = 100;
+var displayY = 0;
 
 // All logo elements
-var selectedItems = [];				// 3 currently selected logo elements
-var marker = 0; 					// Index selection is at
+var selectedItems = []; // 3 currently selected logo elements
+var marker = 0; // Index selection is at
 
-btnBounceUp.addEventListener('click', function () {
-	// If there are any existing displayed logos remove them
-	console.log('selected.length ', selectedItems.length);
-		if (selectedItems.length > 0){
-        	bounceOut();
-    	} else {
-    		bounceIn();
-    	}
+btnBounceUp.addEventListener('click', function() {
+    // If there are any existing displayed logos remove them
+    console.log('selected.length ', selectedItems.length);
+    if (selectedItems.length > 0) {
+        bounceOut();
+        bounceIn();
+    } else {
+        bounceIn();
+    }
 });
 
-function bounceInComplete () {
-	updateMarker();
-	console.log('bounceIn complete');
+function bounceInComplete() {
+    console.log('bounceIn complete');
 
 }
 
-function bounceOutComplete () {
-	console.log('bounceOut complete');
-	bounceIn();
+function bounceOutComplete() {
+    console.log('bounceOut complete');
 }
 
 
 function bounceIn() {
-	// Select next 3 logos to move, and store a ref to them
-	selectedItems = [allItems[marker], allItems[marker+1], allItems[marker+2]];
-	// Enter them
-	TweenMax.staggerTo(selectedItems, 1.5, {
-    cycle:{
-      y: function(index) { 
-      	var itemY = selectedItems[index].getBoundingClientRect().y;
-      	var destY = displayY - itemY;
-      	return destY;
-      }
-    },
-    ease: "customAnim"
-  }, 0.5, bounceInComplete);
+    // Select next 3 logos to move, and store a ref to them
+    selectedItems = randomise([allItems[marker], allItems[marker + 1], allItems[marker + 2]]);
+    for (var i = 0; i < 3; i++) {
+        TweenMax.set(selectedItems[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
+    }
+
+    TweenMax.staggerTo(selectedItems, 1.5, {
+        y: displayY,
+        opacity: 1,
+        ease: Elastic.easeOut
+    }, 0.4, bounceInComplete);
+    updateMarker();
 }
 
 function bounceOut() {
-	var animItems = selectedItems.slice(0);
-	TweenMax.staggerTo(animItems, 0.3, {
-	  scaleX:0,
-	   scaleY:0
-	}, 0.3, bounceOutComplete);
+    var animItems = selectedItems.slice(0);
+    TweenMax.staggerTo(animItems, 0.6, {
+        y: initY,
+        opacity: 0,
+        ease: Power3.easeOut
+    }, 0.5, bounceOutComplete);
 }
 
 
-function updateMarker(){
-	// Reassign marker position
-	if ((marker+3) < allItems.length){
-		marker = marker+3;
-	} else {
-		marker = 0;
-	}
-	console.log('marker ', marker);
+function updateMarker() {
+    // Reassign marker position
+    if ((marker + 3) < allItems.length) {
+        marker = marker + 3;
+    } else {
+        marker = 0;
+    }
+
 }
 
+function randomise(array) {
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
 
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
 
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-// TweenLite.to(".logo", 2, { ease: "hop", scale:1.5, rotation:30 });
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
