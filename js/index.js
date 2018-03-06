@@ -43,8 +43,6 @@ var master;
 var selectedItems = []; // 3 currently selected logo elements
 var marker = 0; // Index selection is at
 
-var tl = new TimelineMax({paused:true});
-
 btn.addEventListener('click', function() {
      // createTimeline();
     // simpleTest1();
@@ -77,7 +75,7 @@ function createTimeline(){
     marker=0;
     var elements;
     var elementsExit;
-
+    var tl = new TimelineMax({paused:true});
     do {
 
         // Select next set of logos to animate
@@ -177,7 +175,7 @@ function simpleTest3(){
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
 	master.add(TL_row(1));
-	master.add(TL_row(2), '+=4');
+	master.add(TL_row(2), '-=4');
 	master.play();
 
 }
@@ -204,13 +202,7 @@ function TL_row(num) {
 
     // Select next set of logos to animate
     var elems = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
-   
-    // Get Row 1 in starting pos
-    // tl.set(elems[0], {x:200, y:startY, opacity:0});
-    // tl.set(elems[1], {x:400, y:startY, opacity:0});
-    // tl.set(elems[2], {x:600, y:startY, opacity:0});
 
-    // if (num === 2 ) {tl.delay(4);}
     // Tween in Row 1
     tl.add('animate-in');
     tl.fromTo(elems[0], 1,{y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
@@ -222,23 +214,16 @@ function TL_row(num) {
     tl.to(elems[0], 1, {ease:Power2.easeOut,y:startY, opacity:0.5},'+=2');
     tl.to(elems[1], 1, {ease:Power2.easeOut,y:startY, opacity:0.5});
     tl.to(elems[2], 1, {ease:Power2.easeOut,y:startY, opacity:0.5});
-    // tl.addPause()
 
     return tl;
 }
 
 
 function maximise(){
-	// master.set({opacity:0})
 	 master.pause();
 }
 
-function animInComplete(){
-    console.log('anim in complete');
-}
-function animOutComplete(){
-    console.log('anim out complete');
-}
+
 
 function randomise(array) {
     var currentIndex = array.length,
