@@ -177,7 +177,7 @@ function simpleTest3(){
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
 	master.add(TL_row(1));
-	master.add(TL_row(2));
+	master.add(TL_row(2), '+=4');
 	master.play();
 
 }
@@ -210,7 +210,7 @@ function TL_row(num) {
     // tl.set(elems[1], {x:400, y:startY, opacity:0});
     // tl.set(elems[2], {x:600, y:startY, opacity:0});
 
-    if (num === 2 ) {tl.delay(4);}
+    // if (num === 2 ) {tl.delay(4);}
     // Tween in Row 1
     tl.add('animate-in');
     tl.fromTo(elems[0], 1,{y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
