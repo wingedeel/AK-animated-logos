@@ -65,8 +65,8 @@ var config = {
     durationOutBetween: 0.5,
 }
 
-var startY = 220;
-var endY = 0;
+var startY = 150;
+var endY = 50;
 
 
 function createTimeline(){
@@ -175,7 +175,7 @@ function simpleTest3(){
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
 	master.add(TL_row(1));
-	master.add(TL_row(2), '-=4');
+	master.add(TL_row(2), '-=2');
 	master.play();
 
 }
@@ -194,7 +194,7 @@ function init(){
 // Returns a timeline for one row
 function TL_row(num) {
 
-    var tl = new TimelineMax({repeat:-1});
+    var tl = new TimelineMax({repeat:-1,repeatDelay:2});
 
     var marker;
     if (num === 1) {marker=0;}
@@ -205,15 +205,15 @@ function TL_row(num) {
 
     // Tween in Row 1
     tl.add('animate-in');
-    tl.fromTo(elems[0], 1,{y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
-    tl.fromTo(elems[1], 1, {y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
-    tl.fromTo(elems[2], 1, {y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
+    tl.fromTo(elems[0], 1,{y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[1], 1, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[2], 1, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
    
     // // Tween out Row 1
     tl.add('animate-out');
-    tl.to(elems[0], 1, {ease:Power2.easeOut,y:startY, opacity:0.5},'+=2');
-    tl.to(elems[1], 1, {ease:Power2.easeOut,y:startY, opacity:0.5});
-    tl.to(elems[2], 1, {ease:Power2.easeOut,y:startY, opacity:0.5});
+    tl.to(elems[0], 1, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[1], 1, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[2], 1, {ease:"customOut",y:startY, opacity:0});
 
     return tl;
 }
@@ -222,7 +222,6 @@ function TL_row(num) {
 function maximise(){
 	 master.pause();
 }
-
 
 
 function randomise(array) {
