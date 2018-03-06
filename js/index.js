@@ -9,6 +9,8 @@
 (I think both these animations can happen at the same time
 rather than one after the other?)
 
+logo1 up, logo2up, logo3up
+logo1 down, logo2down, logo3down
 
 - 
 */
@@ -36,15 +38,18 @@ var displayY = 0;
 var selectedItems = []; // 3 currently selected logo elements
 var marker = 0; // Index selection is at
 
+var tl = new TimelineLite();
+
+
 btnBounceUp.addEventListener('click', function() {
     // If there are any existing displayed logos remove them
-    console.log('selected.length ', selectedItems.length);
-    if (selectedItems.length > 0) {
-        bounceOut();
-        bounceIn();
-    } else {
-        bounceIn();
-    }
+    // if (selectedItems.length > 0) {
+    //     bounceOut();
+    //     bounceIn();
+    // } else {
+    //     bounceIn();
+    // }
+    createTimeline();
 });
 
 function bounceInComplete() {
@@ -54,6 +59,52 @@ function bounceInComplete() {
 
 function bounceOutComplete() {
     console.log('bounceOut complete');
+}
+
+function createTimeline(){
+	
+	// Select next set of logos to animate
+	marker=0;
+	var elements;
+	var elementsExit;
+	elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
+	// Position logos in start pos
+	for (var i = 0; i < 3; i++) {
+        TweenMax.set(elements[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
+    }
+	// Animate in 3 logos
+	tl.staggerTo(elements, 1.5, {
+		y: displayY,
+        opacity: 1,
+        ease: Elastic.easeOut
+    }, 0.5);
+    selectedItems = elements;
+
+	// Animate out logos 1-3
+	elementsExit = selectedItems.slice(0);
+    tl.staggerTo(elementsExit, 1.5, {
+        y: initY,
+        opacity: 0,
+        ease: Power3.easeOut
+    }, 0.5);
+
+    // Select next set of logos to animate
+	marker=3;
+	elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
+	// Position logos in start pos
+	for (var i = 0; i < 3; i++) {
+        TweenMax.set(elements[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
+    }
+
+    // Animate in 3 logos
+	tl.staggerTo(elements, 1.5, {
+		y: displayY,
+        opacity: 1,
+        ease: Elastic.easeOut
+    }, 0.5, "-=3");
+    selectedItems = elements;
+
+    tl.play();
 }
 
 
