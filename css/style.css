@@ -9,11 +9,12 @@
 }
 #logo-container {
 	position:relative;
-	top: 50%;
+	top: 70%;
 	left: 15%;
 	margin:0 auto;
-	height: 300px;
+	height: 100px;
 	/*border: 1px solid red;*/
+	overflow:hidden;
 }
 
 h3 {
@@ -21,9 +22,9 @@ h3 {
 }
 
 .logo {
-	width: 10%;
+	width: 20%;
 	position:absolute;
 	top:0px;
 	left:0px;
-	opacity:0;
+	/*opacity:0;*/
 }

@@ -23,6 +23,7 @@ CustomEase.create("customOut", "M0,0 C0.344,-0.06 0.544,0.091 0.686,0.198 0.888,
 
 // Get refs to elements
 var btn = document.querySelector('#btn');
+var btnMaximise = document.querySelector('#btn-maximise');
 var logo_01 = document.querySelector('#logo-01');
 var logo_02 = document.querySelector('#logo-02');
 var logo_03 = document.querySelector('#logo-03');
@@ -35,7 +36,7 @@ var allItems = [
     logo_04, logo_05, logo_06
 ];
 
-
+var master;
 
 
 // All logo elements
@@ -46,7 +47,16 @@ var tl = new TimelineMax({paused:true});
 
 btn.addEventListener('click', function() {
      // createTimeline();
-    simpleTest1();
+    // simpleTest1();
+    // simpleTest2();
+    simpleTest3();
+});
+
+btnMaximise.addEventListener('click', function() {
+     // createTimeline();
+    // simpleTest1();
+    // simpleTest2();
+    maximise();
 });
 
 
@@ -115,9 +125,9 @@ function simpleTest1 () {
     elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
    
     // Get Row 1 in starting pos
-    tl.add(TweenMax.set(allItems[0], {x:200, y:startY, opacity:0}));
-    tl.add(TweenMax.set(allItems[1], {x:400, y:startY, opacity:0}));
-    tl.add(TweenMax.set(allItems[2], {x:600, y:startY, opacity:0}));
+    tl.set(allItems[0], {x:200, y:startY, opacity:0});
+    tl.set(allItems[1], {x:400, y:startY, opacity:0});
+    tl.set(allItems[2], {x:600, y:startY, opacity:0});
 
     // Tween in Row 1
     tl.to(allItems[0], 1, {ease:Power2.easeIn,y:endY, opacity:1});
@@ -125,19 +135,19 @@ function simpleTest1 () {
     tl.to(allItems[2], 1, {ease:Power2.easeIn,y:endY, opacity:1});
 
     // Get Row 2 in starting pos
-    tl.add(TweenMax.set(allItems[3], {x:200, y:startY, opacity:0}));
-    tl.add(TweenMax.set(allItems[4], {x:400, y:startY, opacity:0}));
-    tl.add(TweenMax.set(allItems[5], {x:600, y:startY, opacity:0}));
+    // tl.add(TweenMax.set(allItems[3], {x:200, y:startY, opacity:0}));
+    // tl.add(TweenMax.set(allItems[4], {x:400, y:startY, opacity:0}));
+    // tl.add(TweenMax.set(allItems[5], {x:600, y:startY, opacity:0}));
 
-    // Tween in Row 2
-    tl.to(allItems[3], 1, {ease:Power2.easeIn,y:endY, opacity:1});
-    tl.to(allItems[4], 1, {ease:Power2.easeIn,y:endY, opacity:1});
-    tl.to(allItems[5], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    // // Tween in Row 2
+    // tl.to(allItems[3], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    // tl.to(allItems[4], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    // tl.to(allItems[5], 1, {ease:Power2.easeIn,y:endY, opacity:1});
 
-    // Tween out Row 1
-    tl.to(allItems[0], 2, {ease:Power2.easeOut,y:startY, opacity:0.5},"-=1");
-    tl.to(allItems[1], 2, {ease:Power2.easeOut,y:startY, opacity:0.5}, "-=2");
-    tl.to(allItems[2], 2, {ease:Power2.easeOut,y:startY, opacity:0.5}, "-=3");
+    // // Tween out Row 1
+    tl.to(allItems[0], 2, {ease:Power2.easeOut,y:startY, opacity:0.5});
+    tl.to(allItems[1], 2, {ease:Power2.easeOut,y:startY, opacity:0.5});
+    tl.to(allItems[2], 2, {ease:Power2.easeOut,y:startY, opacity:0.5});
 
     // TweenMax.set(allItems[3], {x:200, y:startY, opacity:0.5});
 
@@ -150,6 +160,78 @@ function simpleTest1 () {
     tl.play();
 }
 
+function simpleTest2(){
+	TweenMax.set(allItems[0], {x:200, y:startY, opacity:0});
+    TweenMax.set(allItems[1], {x:400, y:startY, opacity:0});
+    TweenMax.set(allItems[2], {x:600, y:startY, opacity:0});
+
+    // Tween in Row 1
+    TweenMax.to(allItems[0], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    TweenMax.to(allItems[1], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    TweenMax.to(allItems[2], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+}
+
+function simpleTest3(){
+	init();
+	// Create a master timeline
+	// With a timeline for each row
+	master = new TimelineMax({paused:true});
+	master.add(TL_row(1));
+	master.add(TL_row(2));
+	master.play();
+
+}
+
+function init(){
+	// Set logos at their correct y positions
+	var elems = allItems;	
+	TweenMax.set(elems[0], {x:100, y:startY});
+    TweenMax.set(elems[1], {x:300, y:startY});
+    TweenMax.set(elems[2], {x:500, y:startY});
+    TweenMax.set(elems[3], {x:100, y:startY});
+    TweenMax.set(elems[4], {x:300, y:startY});
+    TweenMax.set(elems[5], {x:500, y:startY});
+}
+
+// Returns a timeline for one row
+function TL_row(num) {
+
+    var tl = new TimelineMax({repeat:-1});
+
+    var marker;
+    if (num === 1) {marker=0;}
+    if (num === 2) {marker=3;}
+
+    // Select next set of logos to animate
+    var elems = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
+   
+    // Get Row 1 in starting pos
+    // tl.set(elems[0], {x:200, y:startY, opacity:0});
+    // tl.set(elems[1], {x:400, y:startY, opacity:0});
+    // tl.set(elems[2], {x:600, y:startY, opacity:0});
+
+    if (num === 2 ) {tl.delay(4);}
+    // Tween in Row 1
+    tl.add('animate-in');
+    tl.fromTo(elems[0], 1,{y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
+    tl.fromTo(elems[1], 1, {y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
+    tl.fromTo(elems[2], 1, {y:startY, opacity:0.5},{ease:Power2.easeIn,y:endY, opacity:1});
+   
+    // // Tween out Row 1
+    tl.add('animate-out');
+    tl.to(elems[0], 1, {ease:Power2.easeOut,y:startY, opacity:0.5},'+=2');
+    tl.to(elems[1], 1, {ease:Power2.easeOut,y:startY, opacity:0.5});
+    tl.to(elems[2], 1, {ease:Power2.easeOut,y:startY, opacity:0.5});
+    // tl.addPause()
+
+    return tl;
+}
+
+
+function maximise(){
+	// master.set({opacity:0})
+	 master.pause();
+}
 
 function animInComplete(){
     console.log('anim in complete');
