@@ -14,11 +14,15 @@ logo1 down, logo2down, logo3down
 
 - 
 */
+// Animation variables
 
-CustomEase.create("customAnim", "M0,0.005 C0,0.005 0.056,0.445 0.175,0.445 0.294,0.445 0.332,0 0.332,0 0.332,0 0.414,1 0.671,1 0.991,1 1,0 1,0");
 
+// Create custom 'in' and 'out' animations
+CustomEase.create("customIn", "M0,0 C0,0 0.136,0.462 0.172,0.902 0.182,0.99 0.234,1.048 0.312,1.044 0.363,1.041 0.394,0.978 0.468,0.978 0.524,0.978 0.58,1.01 0.638,1.012 0.726,1.012 0.766,1 0.904,1 0.964,1 1,1 1,1");
+CustomEase.create("customOut", "M0,0 C0.344,-0.06 0.544,0.091 0.686,0.198 0.888,0.35 0.99,0.638 1,1");
+
+// Get refs to elements
 var btnBounceUp = document.querySelector('#btn-bounce-up');
-
 var logo_01 = document.querySelector('#logo-01');
 var logo_02 = document.querySelector('#logo-02');
 var logo_03 = document.querySelector('#logo-03');
@@ -31,6 +35,7 @@ var allItems = [
     logo_04, logo_05, logo_06
 ];
 
+
 var initY = 100;
 var displayY = 0;
 
@@ -38,110 +43,56 @@ var displayY = 0;
 var selectedItems = []; // 3 currently selected logo elements
 var marker = 0; // Index selection is at
 
-var tl = new TimelineLite();
-
+var tl = new TimelineMax({repeat:-1});
 
 btnBounceUp.addEventListener('click', function() {
-    // If there are any existing displayed logos remove them
-    // if (selectedItems.length > 0) {
-    //     bounceOut();
-    //     bounceIn();
-    // } else {
-    //     bounceIn();
-    // }
     createTimeline();
 });
 
-function bounceInComplete() {
-    console.log('bounceIn complete');
 
-}
-
-function bounceOutComplete() {
-    console.log('bounceOut complete');
-}
+/*
+Look at how many logos there are and create a timeline animation
+*/
 
 function createTimeline(){
-	
-	// Select next set of logos to animate
-	marker=0;
-	var elements;
-	var elementsExit;
-	elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
-	// Position logos in start pos
-	for (var i = 0; i < 3; i++) {
-        TweenMax.set(elements[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
-    }
-	// Animate in 3 logos
-	tl.staggerTo(elements, 1.5, {
-		y: displayY,
-        opacity: 1,
-        ease: Elastic.easeOut
-    }, 0.5);
-    selectedItems = elements;
-
-	// Animate out logos 1-3
-	elementsExit = selectedItems.slice(0);
-    tl.staggerTo(elementsExit, 1.5, {
-        y: initY,
-        opacity: 0,
-        ease: Power3.easeOut
-    }, 0.5);
-
+    
     // Select next set of logos to animate
-	marker=3;
-	elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
-	// Position logos in start pos
-	for (var i = 0; i < 3; i++) {
-        TweenMax.set(elements[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
-    }
+    marker=0;
+    var elements;
+    var elementsExit;
 
-    // Animate in 3 logos
-	tl.staggerTo(elements, 1.5, {
-		y: displayY,
-        opacity: 1,
-        ease: Elastic.easeOut
-    }, 0.5, "-=3");
-    selectedItems = elements;
+    do {
+
+        elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
+        // Position logos in start pos
+        for (var i = 0; i < 3; i++) {
+            TweenMax.set(elements[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
+        }
+        // Animate in 3 logos
+        tl.staggerTo(elements, 1.5, {
+            y: displayY,
+            opacity: 1,
+            ease: "customIn"
+        }, 0.5);
+        selectedItems = elements;
+
+        // Animate out 3 logos
+        elementsExit = selectedItems.slice(0);
+        tl.staggerTo(elementsExit, 1.5, {
+            y: initY,
+            opacity: 0,
+            ease: "customOut"
+        }, 0.5);
+
+         marker = marker+3;
+
+    } while ((marker + 3) < allItems.length);
+
 
     tl.play();
 }
 
 
-function bounceIn() {
-    // Select next 3 logos to move, and store a ref to them
-    selectedItems = randomise([allItems[marker], allItems[marker + 1], allItems[marker + 2]]);
-    for (var i = 0; i < 3; i++) {
-        TweenMax.set(selectedItems[i], { x: (200 * i) + 200, y: initY, opacity: 0 })
-    }
-
-    TweenMax.staggerTo(selectedItems, 1.5, {
-        y: displayY,
-        opacity: 1,
-        ease: Elastic.easeOut
-    }, 0.4, bounceInComplete);
-    updateMarker();
-}
-
-function bounceOut() {
-    var animItems = selectedItems.slice(0);
-    TweenMax.staggerTo(animItems, 0.6, {
-        y: initY,
-        opacity: 0,
-        ease: Power3.easeOut
-    }, 0.5, bounceOutComplete);
-}
-
-
-function updateMarker() {
-    // Reassign marker position
-    if ((marker + 3) < allItems.length) {
-        marker = marker + 3;
-    } else {
-        marker = 0;
-    }
-
-}
 
 function randomise(array) {
     var currentIndex = array.length,
