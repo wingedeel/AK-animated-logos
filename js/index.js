@@ -22,7 +22,7 @@ CustomEase.create("customIn", "M0,0 C0,0 0.136,0.462 0.172,0.902 0.182,0.99 0.23
 CustomEase.create("customOut", "M0,0 C0.344,-0.06 0.544,0.091 0.686,0.198 0.888,0.35 0.99,0.638 1,1");
 
 // Get refs to elements
-var btnBounceUp = document.querySelector('#btn-bounce-up');
+var btn = document.querySelector('#btn');
 var logo_01 = document.querySelector('#logo-01');
 var logo_02 = document.querySelector('#logo-02');
 var logo_03 = document.querySelector('#logo-03');
@@ -42,40 +42,35 @@ var allItems = [
 var selectedItems = []; // 3 currently selected logo elements
 var marker = 0; // Index selection is at
 
-var tl = new TimelineMax({paused:true, repeat:-1});
+var tl = new TimelineMax({paused:true});
 
-btnBounceUp.addEventListener('click', function() {
-     createTimeline();
-    // simpleTest1();
+btn.addEventListener('click', function() {
+     // createTimeline();
+    simpleTest1();
 });
 
 
 var config = {
-    durationInEach:2,
-    durationInBetween: 1,
-    durationOutEach:2,
-    durationOutBetween: 1,
+    durationInEach:1,
+    durationInBetween: 0.5,
+    durationOutEach:0.5,
+    durationOutBetween: 0.5,
 }
 
-var startY = 500;
+var startY = 220;
 var endY = 0;
-// var opacity = 0; // 0 or 1
 
-
-
-/*
-Look at how many logos there are and create a timeline animation
-*/
 
 function createTimeline(){
     
-    // Select next set of logos to animate
+    
     marker=0;
     var elements;
     var elementsExit;
 
     do {
 
+        // Select next set of logos to animate
         elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
 
         // Position logos in start pos
@@ -89,7 +84,7 @@ function createTimeline(){
             ease: "customIn"
         }, config.durationInBetween);
         selectedItems = elements;
-
+         marker = marker+3;
         // Animate out 3 logos (slightly before the previous stagger completes)
         elementsExit = selectedItems.slice(0);
         tl.staggerTo(elementsExit, config.durationOutEach, {
@@ -101,7 +96,7 @@ function createTimeline(){
             }}
         }, config.durationOutBetween);
 
-         marker = marker+3;
+        
 
     } while ((marker + 3) < allItems.length);
 
@@ -110,52 +105,50 @@ function createTimeline(){
 }
 
 function simpleTest1 () {
+
+    var tl = new TimelineMax({paused:true});
+
+    marker=0;
+    var elements;
+
+    // Select next set of logos to animate
+    elements = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
    
+    // Get Row 1 in starting pos
+    tl.add(TweenMax.set(allItems[0], {x:200, y:startY, opacity:0}));
+    tl.add(TweenMax.set(allItems[1], {x:400, y:startY, opacity:0}));
+    tl.add(TweenMax.set(allItems[2], {x:600, y:startY, opacity:0}));
 
-    TweenMax.set(allItems[0], {x:200, y:endY, opacity:1});
-    TweenMax.set(allItems[3], {x:200, y:startY, opacity:0.5});
+    // Tween in Row 1
+    tl.to(allItems[0], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    tl.to(allItems[1], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    tl.to(allItems[2], 1, {ease:Power2.easeIn,y:endY, opacity:1});
 
-     var tl = new TimelineMax({paused:true, repeat:-1});
-    tl.to(allItems[0], 2, {ease:Power2.easeOut, y:startY, opacity:0.5});
-    tl.to(allItems[3], 2, {ease:Power2.easeIn,y:endY, opacity:1});
-    tl.to(allItems[0], 2, {ease:Power2.easeIn,y:endY, opacity:1}, "-=1");
-    tl.to(allItems[3], 2, {ease:Power2.easeOut,y:startY, opacity:0.5});
+    // Get Row 2 in starting pos
+    tl.add(TweenMax.set(allItems[3], {x:200, y:startY, opacity:0}));
+    tl.add(TweenMax.set(allItems[4], {x:400, y:startY, opacity:0}));
+    tl.add(TweenMax.set(allItems[5], {x:600, y:startY, opacity:0}));
+
+    // Tween in Row 2
+    tl.to(allItems[3], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    tl.to(allItems[4], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+    tl.to(allItems[5], 1, {ease:Power2.easeIn,y:endY, opacity:1});
+
+    // Tween out Row 1
+    tl.to(allItems[0], 2, {ease:Power2.easeOut,y:startY, opacity:0.5},"-=1");
+    tl.to(allItems[1], 2, {ease:Power2.easeOut,y:startY, opacity:0.5}, "-=2");
+    tl.to(allItems[2], 2, {ease:Power2.easeOut,y:startY, opacity:0.5}, "-=3");
+
+    // TweenMax.set(allItems[3], {x:200, y:startY, opacity:0.5});
+
+     
+    // tl.to(allItems[0], 2, {ease:Power2.easeOut, y:startY, opacity:0.5});
+    // tl.to(allItems[3], 2, {ease:Power2.easeIn,y:endY, opacity:1});
+    // tl.to(allItems[0], 2, {ease:Power2.easeIn,y:endY, opacity:1}, "-=1");
+    // tl.to(allItems[3], 2, {ease:Power2.easeOut,y:startY, opacity:0.5});
 
     tl.play();
 }
-
-// function createSingleTimeline(){
-    
-//     // Select next set of logos to animate
-//     marker=0;
-//     var element= allItems[marker];
-//     var elementsExit;
-
-    
-
-//     TweenMax.set(element, { x: 200, y: startY, opacity: 0 })
-//     TweenMax.to(element, config.durationInEach, {
-//             y: endY,
-//             opacity: 1,
-//             ease: "customIn"
-//         }, config.durationInBetween);
-//         selectedItems = elements;
-
-//         // Animate out 3 logos (slightly before the previous stagger completes)
-//         elementsExit = selectedItems.slice(0);
-//         tl.staggerTo(elementsExit, config.durationOutEach, {
-//             y: startY,
-//             opacity: 0,
-//             ease: "customOut"
-//         }, config.durationOutBetween);
-
-//          marker = marker+3;
-
-//     } while ((marker + 3) < allItems.length);
-
-
-//     tl.play();
-// }
 
 
 function animInComplete(){
