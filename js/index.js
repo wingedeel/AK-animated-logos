@@ -44,7 +44,7 @@ var endY = 50;
 
 
 function createAnimation(){
-	init();
+	// init();
 	// Create a master timeline
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
@@ -54,16 +54,16 @@ function createAnimation(){
 
 }
 
-function init(){
-	// Set logos at their correct y positions
-	var elems = allItems;	
-	TweenMax.set(elems[0], {x:100, y:startY});
-    TweenMax.set(elems[1], {x:300, y:startY});
-    TweenMax.set(elems[2], {x:500, y:startY});
-    TweenMax.set(elems[3], {x:100, y:startY});
-    TweenMax.set(elems[4], {x:300, y:startY});
-    TweenMax.set(elems[5], {x:500, y:startY});
-}
+// function init(){
+// 	// Set logos at their correct y positions
+// 	var elems = allItems;	
+// 	TweenMax.set(elems[0], {x:100, y:startY});
+//     TweenMax.set(elems[1], {x:300, y:startY});
+//     TweenMax.set(elems[2], {x:500, y:startY});
+//     TweenMax.set(elems[3], {x:100, y:startY});
+//     TweenMax.set(elems[4], {x:300, y:startY});
+//     TweenMax.set(elems[5], {x:500, y:startY});
+// }
 
 // Returns a timeline for one row
 function TL_row(num) {
@@ -76,6 +76,8 @@ function TL_row(num) {
 
     // Select next set of logos to animate
     var elems = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
+
+    // Set their position to start y position
 
     // Tween in Row 1
     tl.add('animate-in');

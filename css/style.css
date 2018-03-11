@@ -12,9 +12,9 @@
 	top: 70%;
 	left: 15%;
 	margin:0 auto;
-	height: 150px;
+	/*height: 150px;*/
 	/*border: 1px solid red;*/
-	overflow:hidden;
+	/*overflow:hidden;*/
 }
 
 h3 {
@@ -23,8 +23,8 @@ h3 {
 
 .logo {
 	width: 20%;
-	position:absolute;
+	margin: 2%;
+	/*position:absolute;
 	top:0px;
-	left:0px;
-	/*opacity:0;*/
+	left:0px;*/
 }
