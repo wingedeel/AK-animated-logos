@@ -31,7 +31,9 @@ btnMaximise.addEventListener('click', function() {
     maximise();
 });
 
+// ------------------ //
 // Animation variables
+// ------------------ //
 var timing = {
     in:1,
     out:1,
@@ -39,9 +41,12 @@ var timing = {
     betweenLoop: 2
 }
 
-
 var startY = 150;
 var endY = 50;
+var logoSpacing = 250;
+var logosPerRow = 3;
+// ------------------ //
+// ------------------ //
 
 
 function createAnimation(){
@@ -57,13 +62,20 @@ function createAnimation(){
 
 function initAnim(){
 	// Set logos at their correct x positions
-	var elems = allItems;	
-	TweenMax.set(elems[0], {x:100});
-    TweenMax.set(elems[1], {x:300});
-    TweenMax.set(elems[2], {x:500});
-    TweenMax.set(elems[3], {x:100});
-    TweenMax.set(elems[4], {x:300});
-    TweenMax.set(elems[5], {x:500});
+	var elems = allItems;
+    var xMarker = 0;	
+    for (var i=0; i<elems.length; i++){
+        // Ascertain xPos of logo
+        var xPos = (xMarker*logoSpacing);
+        // Update marker
+        if (xMarker+1 === logosPerRow) {
+            xMarker=0;
+        } else {
+            xMarker++;
+        }
+        // Set logo at xpos
+        TweenMax.set(elems[i], {x:xPos});
+    }
 }
 
 // Returns a timeline for one row
@@ -112,6 +124,7 @@ function maximise(){
 // Set each logo at its y position based on its position in the non-selected elements array
 function itemsToGrid(){
     // Establish which logos are not currently selected
+    // Position those items on the correct y
 }
 
 
