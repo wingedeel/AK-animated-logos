@@ -45,7 +45,7 @@ var endY = 50;
 
 
 function createAnimation(){
-	// init();
+	initAnim();
 	// Create a master timeline
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
@@ -55,16 +55,16 @@ function createAnimation(){
 
 }
 
-// function init(){
-// 	// Set logos at their correct y positions
-// 	var elems = allItems;	
-// 	TweenMax.set(elems[0], {x:100, y:startY});
-//     TweenMax.set(elems[1], {x:300, y:startY});
-//     TweenMax.set(elems[2], {x:500, y:startY});
-//     TweenMax.set(elems[3], {x:100, y:startY});
-//     TweenMax.set(elems[4], {x:300, y:startY});
-//     TweenMax.set(elems[5], {x:500, y:startY});
-// }
+function initAnim(){
+	// Set logos at their correct x positions
+	var elems = allItems;	
+	TweenMax.set(elems[0], {x:100});
+    TweenMax.set(elems[1], {x:300});
+    TweenMax.set(elems[2], {x:500});
+    TweenMax.set(elems[3], {x:100});
+    TweenMax.set(elems[4], {x:300});
+    TweenMax.set(elems[5], {x:500});
+}
 
 // Returns a timeline for one row
 function rowAnim(num) {
@@ -79,6 +79,7 @@ function rowAnim(num) {
     var elems = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
 
     // Set their position to start y position
+    // tl.set(element, {left:100, opacity:0.5});
 
     // Tween in Row 1
     tl.add('animate-in');
@@ -96,9 +97,23 @@ function rowAnim(num) {
 }
 
 
+function minimise(){
+
+}
+
+// Pause and close down existing animation
+// Shuffle up remaining rows
+// Expand 'logo container' div
 function maximise(){
 	 master.pause();
 }
+
+// Each logo already has its x pos (that doesn't change over the course of this animation)
+// Set each logo at its y position based on its position in the non-selected elements array
+function itemsToGrid(){
+    // Establish which logos are not currently selected
+}
+
 
 // Utils / helper functions
 function randomise(array) {
