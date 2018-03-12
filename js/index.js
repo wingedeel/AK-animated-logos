@@ -32,15 +32,16 @@ btnMaximise.addEventListener('click', function() {
 });
 
 // Animation variables
-var config = {
+var timing = {
     in:1,
-    out:1
+    out:1,
+    betweenRows: '-=2',
+    betweenLoop: 2
 }
+
 
 var startY = 150;
 var endY = 50;
-
-
 
 
 function createAnimation(){
@@ -48,8 +49,8 @@ function createAnimation(){
 	// Create a master timeline
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
-	master.add(TL_row(1));
-	master.add(TL_row(2), '-=2');
+	master.add(rowAnim(1));
+	master.add(rowAnim(2), timing.betweenRows);
 	master.play();
 
 }
@@ -66,9 +67,9 @@ function createAnimation(){
 // }
 
 // Returns a timeline for one row
-function TL_row(num) {
+function rowAnim(num) {
 
-    var tl = new TimelineMax({repeat:-1,repeatDelay:2});
+    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop});
 
     var marker;
     if (num === 1) {marker=0;}
@@ -81,15 +82,15 @@ function TL_row(num) {
 
     // Tween in Row 1
     tl.add('animate-in');
-    tl.fromTo(elems[0], config.in ,{y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
-    tl.fromTo(elems[1], config.in, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
-    tl.fromTo(elems[2], config.in, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[0], timing.in ,{y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[1], timing.in, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[2], timing.in, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
    
     // // Tween out Row 1
     tl.add('animate-out');
-    tl.to(elems[0], config.out, {ease:"customOut",y:startY, opacity:0});
-    tl.to(elems[1], config.out, {ease:"customOut",y:startY, opacity:0});
-    tl.to(elems[2], config.out, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[0], timing.out, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[1], timing.out, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[2], timing.out, {ease:"customOut",y:startY, opacity:0});
 
     return tl;
 }
