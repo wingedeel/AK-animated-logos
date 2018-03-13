@@ -1,5 +1,4 @@
 // TO DO NEXT:
-// Get 3 rows to overlap animations slightly
 // On maximise, all items to go to their designated grid position
 
 
@@ -63,9 +62,8 @@ function createAnimation(){
 	// With a timeline for each row
 	master = new TimelineMax({paused:true});
 	master.add(rowAnim(1));
-	// master.add(rowAnim(2), timing.betweenRows);
-    master.add(rowAnim(2));
-    master.add(rowAnim(3));
+    master.add(rowAnim(2), timing.betweenRows);
+    master.add(rowAnim(3), timing.betweenRows);
 	master.play();
 
 }
@@ -91,8 +89,10 @@ function initAnim(){
 // Returns a timeline for one row
 function rowAnim(num) {
 
-    // var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop});
-    var tl = new TimelineMax({repeat:-1,repeatDelay:12});
+    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop*3});
+    // Wait 12 seconds before playing again
+    // (each anim takes 6 secs and there are 2 row animations to wait for)
+    // var tl = new TimelineMax({repeat:-1,repeatDelay:12});
 
     var marker;
     if (num === 1) {marker=0;}
