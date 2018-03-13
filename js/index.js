@@ -130,6 +130,7 @@ function minimise(){
 // Expand 'logo container' div
 function maximise(){
 	 master.pause();
+     itemsToGrid();
 }
 
 // Each logo already has its x pos (that doesn't change over the course of this animation)
@@ -137,6 +138,25 @@ function maximise(){
 function itemsToGrid(){
     // Establish which logos are not currently selected
     // Position those items on the correct y
+    // Set logos at their correct y positions
+    var elems = allItems;
+    var spacing = 200;
+    var marker = 1;   
+    var pos = 0; 
+    for (var i=0; i<elems.length; i++){
+        // Ascertain yPos of logo
+        
+        // Update marker
+        console.log(i);
+        if ((i/marker) === logosPerRow) {
+            console.log('is at 3');
+            marker++;
+            pos = (marker*spacing);
+            // marker=0;
+        } 
+        // Set logo at xpos
+        TweenMax.to(elems[i], 0.4, {y:pos, ease:"customOut"});
+    }
 }
 
 
