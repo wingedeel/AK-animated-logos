@@ -133,32 +133,41 @@ function maximise(){
      itemsToGrid();
 }
 
-// Each logo already has its x pos (that doesn't change over the course of this animation)
-// Set each logo at its y position based on its position in the non-selected elements array
-function itemsToGrid(){
-    // Establish which logos are not currently selected
-    // Position those items on the correct y
-    // Set logos at their correct y positions
+// Each logo has an assigned x,y position with the 'grid'
+// xpos always stays the same, assign a new y pos here
+// Move them from where they are to the destination position.
+function itemsToGrid() {
     var elems = allItems;
-    var spacing = 200;
-    var marker = 1;   
-    var pos = 0; 
-    for (var i=0; i<elems.length; i++){
-        // Ascertain yPos of logo
-        
-        // Update marker
-        console.log(i);
-        if ((i/marker) === logosPerRow) {
-            console.log('is at 3');
-            marker++;
-            pos = (marker*spacing);
-            // marker=0;
-        } 
+    var startPos = 100;
+    var spacingY = 200;
+    var markerX = 0;
+    var markerY = 0;
+    var posY = 0;
+    for (var i = 0; i < elems.length; i++) {
+
+        // Establish a y pos for this item
+        posY = startPos + (markerY * spacingY)
+
+        // When we have reached max num of logos per row
+        // Set x marker back to 0;
+        // Increment y marker
+        if (markerX === (logosPerRow - 1)) {
+            markerX = 0;
+            markerY++;
+        } else {
+            // Otherwise, just increment x marker
+            markerX++;
+        }
         // Set logo at xpos
-        TweenMax.to(elems[i], 0.4, {y:pos, ease:"customOut"});
+        TweenMax.to(elems[i], 0.4, { y: posY, ease: "customOut" });
     }
 }
 
+
+
+function itemsToFixedGrid () {
+
+}
 
 // // Utils / helper functions
 // function randomise(array) {
