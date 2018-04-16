@@ -50,8 +50,9 @@ var timing = {
 
 var startY = 150;
 var endY = 50;
-var logoSpacing = 220;
 var logosPerRow = 3;
+var spacingX = 220;
+var spacingY = 130;
 // ------------------ //
 // ------------------ //
 
@@ -74,7 +75,7 @@ function initAnim(){
     var xMarker = 0;	
     for (var i=0; i<elems.length; i++){
         // Ascertain xPos of logo
-        var xPos = (xMarker*logoSpacing);
+        var xPos = (xMarker*spacingX);
         // Update marker
         if (xMarker+1 === logosPerRow) {
             xMarker=0;
@@ -107,15 +108,15 @@ function rowAnim(num) {
 
     // Tween in Row 1
     tl.add('animate-in');
-    tl.fromTo(elems[0], timing.in ,{y:startY, opacity:0.5},{ease:"customIn",y:endY, opacity:1});
-    tl.fromTo(elems[1], timing.in, {y:startY, opacity:0.5},{ease:"customIn",y:endY, opacity:1});
-    tl.fromTo(elems[2], timing.in, {y:startY, opacity:0.5},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[0], timing.in ,{y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[1], timing.in, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    tl.fromTo(elems[2], timing.in, {y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
    
     // // Tween out Row 1
     tl.add('animate-out');
-    tl.to(elems[0], timing.out, {ease:"customOut",y:startY, opacity:0.5});
-    tl.to(elems[1], timing.out, {ease:"customOut",y:startY, opacity:0.5});
-    tl.to(elems[2], timing.out, {ease:"customOut",y:startY, opacity:0.5});
+    tl.to(elems[0], timing.out, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[1], timing.out, {ease:"customOut",y:startY, opacity:0});
+    tl.to(elems[2], timing.out, {ease:"customOut",y:startY, opacity:0});
 
     return tl;
 }
@@ -139,7 +140,6 @@ function maximise(){
 function itemsToGrid() {
     var elems = allItems;
     var startPos = 100;
-    var spacingY = 200;
     var markerX = 0;
     var markerY = 0;
     var posY = 0;
@@ -159,7 +159,7 @@ function itemsToGrid() {
             markerX++;
         }
         // Set logo at xpos
-        TweenMax.to(elems[i], 0.4, { y: posY, ease: "customOut" });
+        TweenMax.to(elems[i], 0.6, { opacity:1, y: posY, ease: "customOut" });
     }
 }
 
