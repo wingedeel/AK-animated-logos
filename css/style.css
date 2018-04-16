@@ -7,8 +7,7 @@
 }
 #logo-container {
 	position:relative;
-	top: 70%;
-	left: 15%;
+	width:70%;
 	margin:0 auto;
 }
 
@@ -17,7 +16,7 @@ h3 {
 }
 
 .logo {
-	width: 20%;
+	width: calc(100vh/5);
 	position:absolute;
 	top:0px;
 	left:0px;

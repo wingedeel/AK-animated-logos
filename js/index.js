@@ -9,6 +9,7 @@ CustomEase.create("customOut", "M0,0 C0.344,-0.06 0.544,0.091 0.686,0.198 0.888,
 // Get refs to elements
 var btn = document.querySelector('#btn');
 var btnMaximise = document.querySelector('#btn-maximise');
+var btnMinimise = document.querySelector('#btn-minimise');
 
 var logo_01 = document.querySelector('#logo-01');
 var logo_02 = document.querySelector('#logo-02');
@@ -36,6 +37,10 @@ btn.addEventListener('click', function() {
 
 btnMaximise.addEventListener('click', function() {
     maximise();
+});
+
+btnMinimise.addEventListener('click', function() {
+    minimise();
 });
 
 // ------------------ //
@@ -70,10 +75,10 @@ function createAnimation(){
 }
 
 function initAnim(){
+
 	// Set logos at their correct x positions
-	var elems = allItems;
     var xMarker = 0;	
-    for (var i=0; i<elems.length; i++){
+    for (var i=0; i<allItems.length; i++){
         // Ascertain xPos of logo
         var xPos = (xMarker*spacingX);
         // Update marker
@@ -83,7 +88,7 @@ function initAnim(){
             xMarker++;
         }
         // Set logo at xpos
-        TweenMax.set(elems[i], {x:xPos});
+        TweenMax.set(allItems[i], {opacity:0, x:xPos, y: startY});
     }
 }
 
@@ -122,9 +127,7 @@ function rowAnim(num) {
 }
 
 
-function minimise(){
 
-}
 
 // Pause and close down existing animation
 // Shuffle up remaining rows
@@ -132,6 +135,11 @@ function minimise(){
 function maximise(){
 	 master.pause();
      itemsToGrid();
+}
+
+function minimise(){
+    itemsToStart();
+    // master.play();
 }
 
 // Each logo has an assigned x,y position with the 'grid'
@@ -159,11 +167,20 @@ function itemsToGrid() {
             markerX++;
         }
         // Set logo at xpos
-        TweenMax.to(elems[i], 0.6, { opacity:1, y: posY, ease: "customOut" });
+        TweenMax.to(elems[i], 0.6, { opacity:1, y: posY, ease: Power1.easeIn });
     }
 }
 
+// Move logos back to their starting y positions
+function itemsToStart(){
+    // for (var i=0; i<allItems.length; i++){
+        TweenMax.staggerTo(allItems, 0.6, {opacity:0, y: startY, ease: Power1.easeIn, onComplete:restart});
+    // }
+}
 
+function restart() {
+    master.play();
+}
 
 function itemsToFixedGrid () {
 
