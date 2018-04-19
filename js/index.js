@@ -13,7 +13,6 @@ let master;
 const startY = 150;
 const endY = 50;
 const spacingX = 220;
-const spacingY = 130;
 
 const logosPerRow = 2;
 
@@ -23,19 +22,19 @@ const timing = {
     betweenRows: `-= ${logosPerRow-1}`,
     betweenLoop: 2
 }
+
 /*
 TIMING
 3 logos:
 Each tween in is 1 second
 Each tween out is 1 second
 Whole animation takes 6 seconds
-Next row comes in 2 seconds earlier
+Next row comes in 2 seconds earlier, at 4 seconds
 
 2 logos:
 Each tween in is 1 second
 Each tween out is 1 second
 Whole animation takes 4 seconds
-Next row comes in 2 seconds earlier
 
 */
 
@@ -43,51 +42,44 @@ Next row comes in 2 seconds earlier
 // Main methods
 //---------------------------------//
 function createAnimation(){
-	initAnim();
-	// Create a master timeline with a timeline for each row
-	master = new TimelineMax({paused:true});
-	master.add(rowAnim(1));
-    const rowCount = getRowCount();
-    console.log('rowCount ', rowCount);
-    for (let i=2; i<rowCount; i++){
-         master.add(rowAnim(i), timing.betweenRows);
-    }
-    // master.add(rowAnim(2), timing.betweenRows);
-    // master.add(rowAnim(3), timing.betweenRows);
+	initAnimItems();
+    master = createTimeline();
 	master.play();
-
 }
 
-function initAnim(){
-	// Set logos at their correct x positions
+function initAnimItems(){
     var xMarker = 0;	
     for (var i=0; i<allItems.length; i++){
-        // Ascertain xPos of logo
         var xPos = (xMarker*spacingX);
-        // Update marker
         if (xMarker+1 === logosPerRow) {
             xMarker=0;
         } else {
             xMarker++;
         }
-        // Set logo at xpos
+        // Set logo at correct xpos. Set opacity to 0.
         TweenMax.set(allItems[i], {opacity:0, x:xPos, y: startY});
     }
 }
 
+function createTimeline() {
+    // Create a master timeline with a timeline for each row
+    let tl = new TimelineMax({paused:true});
+    let rowCount = getRowCount();
+    tl.add(createRowTimeline(1));
+    for (let i=1; i<(rowCount); i++){
+         tl.add(createRowTimeline(i+1), timing.betweenRows);
+    }
+    return tl;
+}
 
-function rowAnim(num) {
+
+function createRowTimeline(num) {
     // Returns a timeline for one row
-    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop*getRowCount()});
+    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop*(getRowCount()+1)});
 
-    // var marker;
-    // if (num === 1) {marker=0;}
-    // if (num === 2) {marker=3;} // If we're on row 2, get items starting at index 3
-    // if (num === 3) {marker=6;}
     let marker = getRowStartIndex(num,logosPerRow);
 
     // Select next set of logos to animate
-    // var elems = [allItems[marker], allItems[marker + 1], allItems[marker + 2]];
     let elems = [];
     for (let k=0; k<logosPerRow; k++){
         elems.push(allItems[marker+k]);
@@ -113,7 +105,6 @@ function getRowCount() {
 
 function getRowStartIndex(num, rowMax) {
     return Math.floor((num-1)*rowMax);
-    // console.log('start ', start + ' ' + num + ' ' + rowMax)
 }
 
 
@@ -130,7 +121,7 @@ function getRowStartIndex(num, rowMax) {
 // btnMinimise.addEventListener('click', function() {
 //     minimise();
 // });
-
+//const spacingY = 130;
 
 // // Pause and close down existing animation
 // // Shuffle up remaining rows
