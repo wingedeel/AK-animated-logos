@@ -14,7 +14,7 @@ const startY = 150;
 const endY = 50;
 const spacingX = 220;
 
-const logosPerRow = 2;
+const logosPerRow = 3;
 
 const timing = {
     in:1,
@@ -41,33 +41,33 @@ Whole animation takes 4 seconds
 
 // Main methods
 //---------------------------------//
-function createAnimation(){
-	initAnimItems();
+function createAnimation() {
+    initAnimItems();
     master = createTimeline();
-	master.play();
+    master.play();
 }
 
-function initAnimItems(){
-    var xMarker = 0;	
-    for (var i=0; i<allItems.length; i++){
-        var xPos = (xMarker*spacingX);
-        if (xMarker+1 === logosPerRow) {
-            xMarker=0;
+function initAnimItems() {
+    // Set logo at correct xpos. Set opacity to 0.
+    var xMarker = 0;
+    for (var i = 0; i < allItems.length; i++) {
+        var xPos = (xMarker * spacingX);
+        if (xMarker + 1 === logosPerRow) {
+            xMarker = 0;
         } else {
             xMarker++;
         }
-        // Set logo at correct xpos. Set opacity to 0.
-        TweenMax.set(allItems[i], {opacity:0, x:xPos, y: startY});
+        TweenMax.set(allItems[i], { opacity: 0, x: xPos, y: startY });
     }
 }
 
 function createTimeline() {
     // Create a master timeline with a timeline for each row
-    let tl = new TimelineMax({paused:true});
+    let tl = new TimelineMax({ paused: true });
     let rowCount = getRowCount();
     tl.add(createRowTimeline(1));
-    for (let i=1; i<(rowCount); i++){
-         tl.add(createRowTimeline(i+1), timing.betweenRows);
+    for (let i = 1; i < (rowCount); i++) {
+        tl.add(createRowTimeline(i + 1), timing.betweenRows);
     }
     return tl;
 }
@@ -75,24 +75,22 @@ function createTimeline() {
 
 function createRowTimeline(num) {
     // Returns a timeline for one row
-    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop*(getRowCount()+1)});
+    var tl = new TimelineMax({ repeat: -1, repeatDelay: timing.betweenLoop * (getRowCount() + 1) });
 
-    let marker = getRowStartIndex(num,logosPerRow);
-
-    // Select next set of logos to animate
+    let marker = getRowStartIndex(num, logosPerRow);
     let elems = [];
-    for (let k=0; k<logosPerRow; k++){
-        elems.push(allItems[marker+k]);
+    for (let k = 0; k < logosPerRow; k++) {
+        elems.push(allItems[marker + k]);
     }
 
     tl.add('animate-in');
-    for (let i=0; i<logosPerRow; i++) {
-        tl.fromTo(elems[i], timing.in ,{y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
+    for (let i = 0; i < logosPerRow; i++) {
+        tl.fromTo(elems[i], timing.in, { y: startY, opacity: 0 }, { ease: "customIn", y: endY, opacity: 1 });
     }
-   
+
     tl.add('animate-out');
-    for (let j=0; j<logosPerRow; j++) {
-       tl.to(elems[j], timing.out, {ease:"customOut",y:startY, opacity:0});
+    for (let j = 0; j < logosPerRow; j++) {
+        tl.to(elems[j], timing.out, { ease: "customOut", y: startY, opacity: 0 });
     }
 
     return tl;
@@ -100,11 +98,11 @@ function createRowTimeline(num) {
 
 
 function getRowCount() {
-    return Math.floor(allItems.length/logosPerRow);
+    return Math.floor(allItems.length / logosPerRow);
 }
 
 function getRowStartIndex(num, rowMax) {
-    return Math.floor((num-1)*rowMax);
+    return Math.floor((num - 1) * rowMax);
 }
 
 
