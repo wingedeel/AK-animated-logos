@@ -10,18 +10,34 @@ let master;
 
 // Animation variables
 //---------------------------------//
+const startY = 150;
+const endY = 50;
+const spacingX = 220;
+const spacingY = 130;
+
+const logosPerRow = 2;
+
 const timing = {
     in:1,
     out:1,
-    betweenRows: '-=2',
+    betweenRows: `-= ${logosPerRow-1}`,
     betweenLoop: 2
 }
+/*
+TIMING
+3 logos:
+Each tween in is 1 second
+Each tween out is 1 second
+Whole animation takes 6 seconds
+Next row comes in 2 seconds earlier
 
-const startY = 150;
-const endY = 50;
-const logosPerRow = 2;
-const spacingX = 220;
-const spacingY = 130;
+2 logos:
+Each tween in is 1 second
+Each tween out is 1 second
+Whole animation takes 4 seconds
+Next row comes in 2 seconds earlier
+
+*/
 
 
 // Main methods
@@ -62,7 +78,7 @@ function initAnim(){
 
 function rowAnim(num) {
     // Returns a timeline for one row
-    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop*3});
+    var tl = new TimelineMax({repeat:-1,repeatDelay:timing.betweenLoop*getRowCount()});
 
     // var marker;
     // if (num === 1) {marker=0;}
@@ -79,13 +95,11 @@ function rowAnim(num) {
 
     tl.add('animate-in');
     for (let i=0; i<logosPerRow; i++) {
-        console.log('elem ', elems[i]);
         tl.fromTo(elems[i], timing.in ,{y:startY, opacity:0},{ease:"customIn",y:endY, opacity:1});
     }
    
     tl.add('animate-out');
     for (let j=0; j<logosPerRow; j++) {
-        console.log('elem ', elems[j]);
        tl.to(elems[j], timing.out, {ease:"customOut",y:startY, opacity:0});
     }
 
