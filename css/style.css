@@ -1,5 +1,9 @@
-.row {
+.layout-guide {
+	width:200px;
+	margin-left: 150px;
+	margin-top: 70px;
 }
+
 
 #button-container {
 	width:80%;
