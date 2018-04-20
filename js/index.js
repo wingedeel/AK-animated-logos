@@ -23,21 +23,6 @@ const timing = {
     betweenLoop: 2
 }
 
-/*
-TIMING
-3 logos:
-Each tween in is 1 second
-Each tween out is 1 second
-Whole animation takes 6 seconds
-Next row comes in 2 seconds earlier, at 4 seconds
-
-2 logos:
-Each tween in is 1 second
-Each tween out is 1 second
-Whole animation takes 4 seconds
-
-*/
-
 
 // Main methods
 //---------------------------------//
@@ -104,71 +89,6 @@ function getRowCount() {
 function getRowStartIndex(num, rowMax) {
     return Math.floor((num - 1) * rowMax);
 }
-
-
-// Maximise / minimise functionality
-//---------------------------------//
-// var btn = document.querySelector('#btn');
-// var btnMaximise = document.querySelector('#btn-maximise');
-// var btnMinimise = document.querySelector('#btn-minimise');
-
-// btnMaximise.addEventListener('click', function() {
-//     maximise();
-// });
-
-// btnMinimise.addEventListener('click', function() {
-//     minimise();
-// });
-//const spacingY = 130;
-
-// // Pause and close down existing animation
-// // Shuffle up remaining rows
-// // Expand 'logo container' div
-// function maximise(){
-// 	 master.pause();
-//      itemsToGrid();
-// }
-
-// function minimise(){
-//     itemsToStart();
-// }
-
-// // Each logo has an assigned x,y position with the 'grid'
-// // xpos always stays the same, assign a new y pos here
-// // Move them from where they are to the destination position.
-// function itemsToGrid() {
-//     var elems = allItems;
-//     var startPos = 100;
-//     var markerX = 0;
-//     var markerY = 0;
-//     var posY = 0;
-//     for (var i = 0; i < elems.length; i++) {
-
-//         // Establish a y pos for this item
-//         posY = startPos + (markerY * spacingY)
-
-//         // When we have reached max num of logos per row
-//         // Set x marker back to 0; increment y marker
-//         if (markerX === (logosPerRow - 1)) {
-//             markerX = 0;
-//             markerY++;
-//         } else {
-//             // Otherwise, just increment x marker
-//             markerX++;
-//         }
-//         // Set logo at xpos
-//         TweenMax.to(elems[i], 0.6, { opacity:1, y: posY, ease: Power1.easeIn });
-//     }
-// }
-
-// // Move logos back to their starting y positions
-// function itemsToStart(){
-//         TweenMax.staggerTo(allItems, 0.6, {opacity:0, y: startY, ease: Power1.easeIn, onComplete:restart});
-// }
-
-// function restart() {
-//     master.play();
-// }
 
 
 // Init
