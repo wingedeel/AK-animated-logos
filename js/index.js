@@ -20,8 +20,8 @@ const timing = {
     in:1,
     out:1,
     betweenRows: `-= ${logosPerRow-1}`,
-    betweenLoop: 2
 }
+// timing.betweenRows: seconds between one timeline end and next timeline start
 
 
 // Main methods
@@ -33,16 +33,13 @@ function createAnimation() {
 }
 
 function initAnimItems() {
-    // Set logo at correct xpos. Set opacity to 0.
+    // Set logo at correct x and y. Set opacity to 0.
     var xMarker = 0;
     for (var i = 0; i < allItems.length; i++) {
         var xPos = (xMarker * spacingX);
-        if (xMarker + 1 === logosPerRow) {
-            xMarker = 0;
-        } else {
-            xMarker++;
-        }
         TweenMax.set(allItems[i], { opacity: 0, x: xPos, y: startY });
+        // Update xMarker
+        xMarker = (xMarker + 1 === logosPerRow) ? 0 : xMarker+1;
     }
 }
 
@@ -50,7 +47,9 @@ function createTimeline() {
     // Create a master timeline with a timeline for each row
     let tl = new TimelineMax({ paused: true });
     let rowCount = getRowCount();
+    // Create 1st timeline and add
     tl.add(createRowTimeline(1));
+    // Create subsequent timelines with relevant pause between
     for (let i = 1; i < (rowCount); i++) {
         tl.add(createRowTimeline(i + 1), timing.betweenRows);
     }
@@ -60,7 +59,7 @@ function createTimeline() {
 
 function createRowTimeline(num) {
     // Returns a timeline for one row
-    var tl = new TimelineMax({ repeat: -1, repeatDelay: timing.betweenLoop * (getRowCount() + 1) });
+    var tl = new TimelineMax({ repeat: -1, repeatDelay: getRepeatDelay() });
 
     let marker = getRowStartIndex(num, logosPerRow);
     let elems = [];
@@ -88,6 +87,10 @@ function getRowCount() {
 
 function getRowStartIndex(num, rowMax) {
     return Math.floor((num - 1) * rowMax);
+}
+
+function getRepeatDelay() {
+    return 2 * (getRowCount() + 1)
 }
 
 
