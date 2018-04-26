@@ -10,11 +10,14 @@ let master;
 
 // Animation variables
 //---------------------------------//
+const logosPerRow = 3;
 const startY = 150;
 const endY = 50;
-const spacingX = 220;
+const spacingX = window.innerWidth/(logosPerRow*2);//220;
+console.log('spacingX', spacingX);
+console.log('window.innerWidth ', window.innerWidth);
 
-const logosPerRow = 3;
+
 
 const timing = {
     in:1,
@@ -34,10 +37,12 @@ function createAnimation() {
 
 function initAnimItems() {
     // Set logo at correct x and y. Set opacity to 0.
-    var xMarker = 0;
+    let xMarker = 0;
+    const logoWidth = getWidthForLogo();
+    console.log('logo width', logoWidth);
     for (var i = 0; i < allItems.length; i++) {
         var xPos = (xMarker * spacingX);
-        TweenMax.set(allItems[i], { opacity: 0, x: xPos, y: startY });
+        TweenMax.set(allItems[i], { opacity: 0, x: xPos, y: startY, width:logoWidth });
         // Update xMarker
         xMarker = (xMarker + 1 === logosPerRow) ? 0 : xMarker+1;
     }
@@ -93,6 +98,9 @@ function getRepeatDelay() {
     return 2 * (getRowCount() + 1)
 }
 
+function getWidthForLogo() {
+    return (window.innerWidth/logosPerRow) - (spacingX);
+}
 
 // Init
 //---------------------------------//
