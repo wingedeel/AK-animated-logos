@@ -2,53 +2,77 @@
 CustomEase.create("customIn", "M0,0 C0,0 0.136,0.462 0.172,0.902 0.182,0.99 0.234,1.048 0.312,1.044 0.363,1.041 0.394,0.978 0.468,0.978 0.524,0.978 0.58,1.01 0.638,1.012 0.726,1.012 0.766,1 0.904,1 0.964,1 1,1 1,1");
 CustomEase.create("customOut", "M0,0 C0.344,-0.06 0.544,0.091 0.686,0.198 0.888,0.35 0.99,0.638 1,1");
 
-// DOM elements
+// GET DOM elements
 //---------------------------------//
 const allItems = document.getElementsByClassName('logo');
-let master;
 
 
-// Animation variables
+
+// ANIMATION VARIABLES
 //---------------------------------//
-const logosPerRow = 3;
-const startY = 150;
-const endY = 50;
-const spacingX = window.innerWidth/(logosPerRow*2);//220;
-console.log('spacingX', spacingX);
-console.log('window.innerWidth ', window.innerWidth);
-
-
-
+const startY = 100;
+const endY = 0;
 const timing = {
     in:1,
     out:1,
-    betweenRows: `-= ${logosPerRow-1}`,
 }
-// timing.betweenRows: seconds between one timeline end and next timeline start
+
+let master;
+let logosPerRow = 3;
+let pauseBetweenTimelines;
 
 
-// Main methods
+
+
+// INITIALISE DOM ELEMENTS
 //---------------------------------//
+function initAnimItems() {
+    hideItems();
+    setItemsWidth();
+    setItemsPos();
+}
+
 function createAnimation() {
     initAnimItems();
     master = createTimeline();
     master.play();
 }
 
-function initAnimItems() {
-    // Set logo at correct x and y. Set opacity to 0.
-    let xMarker = 0;
-    const logoWidth = getWidthForLogo();
-    console.log('logo width', logoWidth);
-    for (var i = 0; i < allItems.length; i++) {
-        var xPos = (xMarker * spacingX);
-        TweenMax.set(allItems[i], { opacity: 0, x: xPos, y: startY, width:logoWidth });
-        // Update xMarker
-        xMarker = (xMarker + 1 === logosPerRow) ? 0 : xMarker+1;
-    }
+function hideItems() {
+    Array.from(allItems).forEach((item, index) => {
+        TweenMax.set(item, { opacity: 0 });
+    });
 }
 
+function setItemsWidth() {
+    const logoWidth = getWidthForLogo();
+    // console.log('logo width', logoWidth);
+    Array.from(allItems).forEach((item, index) => {
+        TweenMax.set(item, { width: logoWidth });
+    });
+}
+
+function setItemsPos() {
+    let xMarker = 0;
+    let xPos = 0;
+    console.log('logo spacing ', getLogoSpacing())
+    Array.from(allItems).forEach((item, index) => {
+        xPos = xMarker * getLogoSpacing();
+        TweenMax.set(item, { x: xPos, y: startY });
+        xMarker = (xMarker + 1 === logosPerRow) ? 0 : xMarker + 1;
+    });
+}
+
+// CREATE TIMELINES
+//---------------------------------//
 function createTimeline() {
+    if (master != undefined){
+        destroyTimeline();
+    }
+    console.log('creating timeline');
+    console.log('timing.betweenRows ', getPauseBetweenTimelines());
+    console.log('logosPerRow ', logosPerRow);
+    console.log('------------------');
     // Create a master timeline with a timeline for each row
     let tl = new TimelineMax({ paused: true });
     let rowCount = getRowCount();
@@ -56,7 +80,7 @@ function createTimeline() {
     tl.add(createRowTimeline(1));
     // Create subsequent timelines with relevant pause between
     for (let i = 1; i < (rowCount); i++) {
-        tl.add(createRowTimeline(i + 1), timing.betweenRows);
+        tl.add(createRowTimeline(i + 1), getPauseBetweenTimelines());
     }
     return tl;
 }
@@ -85,7 +109,16 @@ function createRowTimeline(num) {
     return tl;
 }
 
+function destroyTimeline(){
+    if (master != undefined){
+        console.log('clearing master timeline')
+        master.clear();
+    }
+}
 
+
+// GET DYNAMIC VARIABLES
+//---------------------------------//
 function getRowCount() {
     return Math.floor(allItems.length / logosPerRow);
 }
@@ -98,11 +131,55 @@ function getRepeatDelay() {
     return 2 * (getRowCount() + 1)
 }
 
-function getWidthForLogo() {
-    return (window.innerWidth/logosPerRow) - (spacingX);
+function getLogoContainerWidth(){
+    //let parentWidth = window.innerWidth;
+    let parentWidth = document.defaultView.getComputedStyle(allItems[0].parentNode, "").getPropertyValue("width");
+    parentWidth = parentWidth.match(/\d+/)[0]; // Get num from pixel string
+    console.log('window.innerWidth ', window.innerWidth);
+    console.log('parentWidth', parentWidth);
+    return parentWidth;
 }
 
-// Init
+function getWidthForLogo() {
+    return (getLogoContainerWidth()/logosPerRow) - getLogoSpacing();
+}
+
+function getLogoSpacing() {
+    return getLogoContainerWidth()/(logosPerRow*2);
+}
+
+function getPauseBetweenTimelines(){
+    return `-= ${logosPerRow-1}`;
+}
+
+
+
+// ON RESIZE
+//---------------------------------//
+window.requestAnimationFrame = window.requestAnimationFrame
+ || window.mozRequestAnimationFrame
+ || window.webkitRequestAnimationFrame
+ || window.msRequestAnimationFrame
+ || function(f){setTimeout(f, 1000/60)}
+
+
+function onResize(){
+    // If windowsize is less then 395 set logosPerRow to 2.
+    if (window.innerWidth < 500) {
+        logosPerRow = 2;
+    } else {
+        logosPerRow = 3;
+    }
+    createAnimation();
+}
+
+window.addEventListener('resize', function() {
+    requestAnimationFrame(onResize)
+}, false)
+
+
+
+// ON LOAD
 //---------------------------------//
 window.onload = function() {
   createAnimation();
