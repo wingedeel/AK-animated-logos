@@ -69,9 +69,9 @@ function createTimeline() {
     if (master != undefined){
         destroyTimeline();
     }
-    console.log('creating timeline');
-    console.log('timing.betweenRows ', getPauseBetweenTimelines());
-    console.log('logosPerRow ', logosPerRow);
+    // console.log('creating timeline');
+    // console.log('timing.betweenRows ', getPauseBetweenTimelines());
+    // console.log('logosPerRow ', logosPerRow);
     console.log('------------------');
     // Create a master timeline with a timeline for each row
     let tl = new TimelineMax({ paused: true });
@@ -132,20 +132,23 @@ function getRepeatDelay() {
 }
 
 function getLogoContainerWidth(){
-    //let parentWidth = window.innerWidth;
-    let parentWidth = document.defaultView.getComputedStyle(allItems[0].parentNode, "").getPropertyValue("width");
-    parentWidth = parentWidth.match(/\d+/)[0]; // Get num from pixel string
+    let parentWidth = window.innerWidth;
+    // let parentWidth = document.defaultView.getComputedStyle(allItems[0].parentNode, "").getPropertyValue("width");
+    // parentWidth = parentWidth.match(/\d+/)[0]; // Get num from pixel string
     console.log('window.innerWidth ', window.innerWidth);
-    console.log('parentWidth', parentWidth);
+    // console.log('parentWidth', parentWidth);
     return parentWidth;
 }
 
 function getWidthForLogo() {
-    return (getLogoContainerWidth()/logosPerRow) - getLogoSpacing();
+    // return (getLogoContainerWidth()/logosPerRow) - getLogoSpacing();
+    return (getLogoContainerWidth()/logosPerRow);
 }
 
 function getLogoSpacing() {
-    return getLogoContainerWidth()/(logosPerRow*2);
+    // return getLogoContainerWidth()/(logosPerRow*2);
+    // return getLogoContainerWidth()/3;
+    return getWidthForLogo();
 }
 
 function getPauseBetweenTimelines(){
