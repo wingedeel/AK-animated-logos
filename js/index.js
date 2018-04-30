@@ -26,6 +26,15 @@ let pauseBetweenTimelines;
 
 // INITIALISE DOM ELEMENTS
 //---------------------------------//
+function init() {
+    if (window.innerWidth < 768) {
+        logosPerRow = 2;
+    } else {
+        logosPerRow = 3;
+    }
+    createAnimation();
+}
+
 function initAnimItems() {
     hideItems();
     setItemsWidth();
@@ -46,7 +55,6 @@ function hideItems() {
 
 function setItemsWidth() {
     const logoWidth = getWidthForLogo();
-    // console.log('logo width', logoWidth);
     Array.from(allItems).forEach((item, index) => {
         TweenMax.set(item, { width: logoWidth });
     });
@@ -69,10 +77,6 @@ function createTimeline() {
     if (master != undefined){
         destroyTimeline();
     }
-    // console.log('creating timeline');
-    // console.log('timing.betweenRows ', getPauseBetweenTimelines());
-    // console.log('logosPerRow ', logosPerRow);
-    console.log('------------------');
     // Create a master timeline with a timeline for each row
     let tl = new TimelineMax({ paused: true });
     let rowCount = getRowCount();
@@ -111,7 +115,6 @@ function createRowTimeline(num) {
 
 function destroyTimeline(){
     if (master != undefined){
-        console.log('clearing master timeline')
         master.clear();
     }
 }
@@ -135,19 +138,15 @@ function getLogoContainerWidth(){
     let parentWidth = window.innerWidth;
     // let parentWidth = document.defaultView.getComputedStyle(allItems[0].parentNode, "").getPropertyValue("width");
     // parentWidth = parentWidth.match(/\d+/)[0]; // Get num from pixel string
-    console.log('window.innerWidth ', window.innerWidth);
     // console.log('parentWidth', parentWidth);
     return parentWidth;
 }
 
 function getWidthForLogo() {
-    // return (getLogoContainerWidth()/logosPerRow) - getLogoSpacing();
     return (getLogoContainerWidth()/logosPerRow);
 }
 
 function getLogoSpacing() {
-    // return getLogoContainerWidth()/(logosPerRow*2);
-    // return getLogoContainerWidth()/3;
     return getWidthForLogo();
 }
 
@@ -167,13 +166,7 @@ window.requestAnimationFrame = window.requestAnimationFrame
 
 
 function onResize(){
-    // If windowsize is less then 395 set logosPerRow to 2.
-    if (window.innerWidth < 500) {
-        logosPerRow = 2;
-    } else {
-        logosPerRow = 3;
-    }
-    createAnimation();
+    init();
 }
 
 window.addEventListener('resize', function() {
@@ -185,5 +178,5 @@ window.addEventListener('resize', function() {
 // ON LOAD
 //---------------------------------//
 window.onload = function() {
-  createAnimation();
+  init();
 };
